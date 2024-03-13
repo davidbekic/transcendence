@@ -1,0 +1,68 @@
+services:
+  nginx:
+    build:
+        context: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - ./front:/usr/share/nginx/html:z
+    networks:
+        - transcendence-net
+
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    expose:
+        - "5432"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - transcendence-net
+    stdin_open: true
+    tty: true
+
+  back:
+    container_name: back
+    build:
+      context: back
+    volumes:
+      - ./back/src:/srv:Z
+    environment:
+      - POSTGRES_HOST
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - DBASE
+    restart: always
+    expose:
+      - "8000"
+    networks:
+        - transcendence-net
+    depends_on:
+      - db
+
+  front:
+    image: nginx:alpine
+    container_name: front
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - ./front:/usr/share/nginx/html
+    networks:
+      - transcendence-net
+
+networks:
+  transcendence-net:
+    name: transcendence-net
+    driver: bridge

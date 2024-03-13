@@ -1,0 +1,1 @@
+echo $ >> front/config.js
