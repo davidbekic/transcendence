@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db.models import Q
+
+import os
 
 
 class MyUsersManager(BaseUserManager):
@@ -25,6 +28,15 @@ def get_profile_image_filepath(self, filename):
 
 def get_default_profile_image():
     return ("profile_images/default_profile_image.png")
+
+
+def get_default_profile_42_image(self):
+    folder_name = f"profile_images/42{self.pk}/"
+    return (os.path.join(folder_name, "profile_image.png"))
+
+
+def get_profile_image_filepath_42(instance, filename):
+    return (os.path.join('profile_image', '42', f'{instance.pk}', filename))
 
 
 class   Users(AbstractBaseUser):
@@ -53,6 +65,20 @@ class   Users(AbstractBaseUser):
     # image and sets it as profile_image name
     def get_profile_image_filename(self):
         return (str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/'):])
+
+
+class   OAuth42Users(models.Model):
+    login           = models.CharField(max_length=64, unique=True)
+    first_name      = models.CharField(max_length=64)
+    last_name       = models.CharField(max_length=64)
+    email           = models.EmailField(max_length=100,
+                                        verbose_name="email", unique=True)
+    image = models.FileField(max_length=500,
+                             upload_to=get_profile_image_filepath_42,
+                             null=True, blank=True)
+
+    def __str__(self):
+        return (f"{self.login}")
 
 
 class FriendList(models.Model):
@@ -122,6 +148,17 @@ class FriendRequest(models.Model):
         Accept a friend request.
         Update both SENDER and RECEIVER friend lists.
         """
+
+        # Update receiver's friend request status
+        receiver_request = FriendRequest.objects.filter(
+                Q(sender=self.sender, receiver=self.receiver) |
+                Q(sender=self.receiver, receiver=self.sender)
+                ).first()
+        if receiver_request:
+            receiver_request.is_active = False
+            receiver_request.save()
+
+        # Update friend lists
         receiver_friend_list = FriendList.objects.get(user=self.receiver)
         if receiver_friend_list:
             receiver_friend_list.add_friend(self.sender)
