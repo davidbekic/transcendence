@@ -18,7 +18,6 @@ from rooms.routing import websocket_urlpatterns
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "transcendance.settings")
 
-logging.debug("rooms routing: ", rooms.routing)
 
 application = ProtocolTypeRouter(
     {
