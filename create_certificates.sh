@@ -22,10 +22,11 @@ fi
 
 # Generate certificates
 echo -e "${GREEN}Generating SSL certificates...${RESET}"
-mkcert pong.xyz localhost 127.0.0.1 ::1
+mkcert pong.xyz localhost 192.168.0.26 127.0.0.1 ::1
 
 # Move certificates to the correct location
 echo -e "${GREEN}Moving certificates to the correct location...${RESET}"
+mkdir ./nginx/certs
 mv *.pem ./nginx/certs/
 
 echo -e "${GREEN}Certificates generated successfully.${RESET}"

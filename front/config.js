@@ -7,4 +7,4 @@ export const FRONT_DEV_ENV = {
   },
 };
 
-export const DOMAIN_NAME = "10.12.7.5";
+export const DOMAIN_NAME = "pong.xyz";

@@ -10,15 +10,15 @@ all: reset_migrations create_certificates create_directories
 reset_migrations:
 	@if ! grep -q '^RESET_MIGRATIONS=false' .env; then \
 		read -p "Do you want to reset migrations? [yes/no]: " reset_migrations; \
-			if [ $$reset_migrations = "yes" ]; then \
-				sed -i 's/RESET_MIGRATIONS=.*/RESET_MIGRATIONS=true/' .env; \
+			if [ "$$reset_migrations" = "yes" ]; then \
+				sed -i '' 's/RESET_MIGRATIONS=.*/RESET_MIGRATIONS=true/' .env; \
 			else \
 				echo "$(RED)Skipping migrations...$(RESET)"; \
-				sed -i 's/RESET_MIGRATIONS=.*/RESET_MIGRATIONS=false/' .env; \
+				sed -i '' 's/RESET_MIGRATIONS=.*/RESET_MIGRATIONS=false/' .env; \
 			fi \
 	else \
 		echo "$(RED)Migrations already reset, skippping...$(RESET)"; \
-		sed -i 's/RESET_MIGRATIONS=.*/RESET_MIGRATIONS=false/' .env; \
+		sed -i '' 's/RESET_MIGRATIONS=.*/RESET_MIGRATIONS=false/' .env; \
 	fi
 
 create_certificates:
