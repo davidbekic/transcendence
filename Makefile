@@ -26,7 +26,7 @@ create_certificates:
 	@bash create_certificates.sh
 
 create_directories:
-	@if [ ! -d "grafana_data" ]; then \
+		@if [ ! -d "grafana_data" ]; then \
 		read -p "Do you want to create the directory 'grafana_data'? [yes/no]: " create_grafana_dir; \
 		if [ $$create_grafana_dir = "yes" ]; then \
 			mkdir -p "grafana_data"; \

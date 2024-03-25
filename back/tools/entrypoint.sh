@@ -1,6 +1,5 @@
 #!/bin/sh
 
-exec "$@"
 # Check if the database is using PostgreSQL
 if [ "$DBASE" = "postgreSQL" ]
 then
@@ -17,5 +16,6 @@ python manage.py migrate
 
 # Run the server
 python manage.py runserver 0.0.0.0:8000 2>&1
+daphne -u /tmp/daphne.sock transcendance.asgi:application
 
 exec "$@"
