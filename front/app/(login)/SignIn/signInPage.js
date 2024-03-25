@@ -117,7 +117,7 @@ export class SignInView {
               <img src="/assets/email.png" height="60" width=""/>
             </div>
           </a>
-          <a target="_blank" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-dbe268104e0d0a1ec1123efbc6b510f5760291dee2b92d44f83056a0a06e00af&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code">
+          <a target="_blank" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-e874bdccc7b9faba51dfa57e391ee107a6d1eb6f84e62ddd20679af8403c851b&redirect_uri=https%3A%2F%2Fpong.xyz%2Fprofile&response_type=code">
             <div id="log-out-btn" class="btn dark-btn pink-btn">
               <img src="/assets/42-logo.png" height="60" width=""/>
             </div>

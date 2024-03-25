@@ -7,6 +7,7 @@ all: create_certificates create_directories
 	@sleep 1
 	@docker compose -f compose.yaml up -d --build
 
+
 create_certificates:
 	chmod +x create_certificates.sh
 	@bash create_certificates.sh

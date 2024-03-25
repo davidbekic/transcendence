@@ -7,6 +7,7 @@ COPY requirements.txt .
 RUN apk update && \
     apk add --no-cache vim \
 	gcc \
+	libffi-dev \ 
 	python3-dev \
 	musl-dev \
 	libpq \
