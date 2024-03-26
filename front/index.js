@@ -10,7 +10,6 @@ import RoomPage from "./app/(game)/room/room.js";
 
 const room = new RoomPage("", 12);
 
-
 const parseJWTToken = async () => {
   // Decode the JWT (this doesn't verify the signature, only decodes the payload)
   const accessToken = localStorage.getItem("access_token");
@@ -32,6 +31,36 @@ const parseJWTToken = async () => {
       localStorage.removeItem("user_id");
       return false;
     }
+  }
+};
+
+const check42Auth = async (authCode) => {
+  // Replace 'your-api-endpoint' with the actual endpoint URL
+  const apiUrl = `https://${DOMAIN_NAME}/api/user/auth42/`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Add any additional headers if needed
+      },
+      body: JSON.stringify({ code: authCode }),
+      // Add any other options if needed (e.g., mode, credentials, etc.)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok (${response.status})`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    console.log("returning");
+    return data;
+  } catch (error) {
+    // Handle errors during the fetch
+    console.error("Error during fetch:", error.message);
+    throw error; // Re-throw the error to propagate it to the caller
   }
 };
 
@@ -101,11 +130,9 @@ export const switchRoute = (route, popstate = false) => {
     new MetaPongPage(switchRoute);
   } else if (route === "/game/local-tournament") {
     new LocalTournamentPage(switchRoute);
-
   } else if (firstPart === "/rooms") {
     const secondPart = route.substring(lastSlashIndex + 1);
     // room;
-
   }
   if (!popstate) {
     console.log(`pushing ${route} to history`);
@@ -120,8 +147,18 @@ window.onpopstate = (event) => {
 };
 
 const initApp = async () => {
-  var url = new URL(window.location.href);
+  const url = new URL(window.location.href);
+  const search = url.search;
   console.log("url: ", url.pathname);
+  console.log("url search: ", url.search);
+  if (search) {
+    const data = await check42Auth(search.substring(6));
+    localStorage.setItem("user_id", data.id);
+    localStorage.setItem("username", data.username);
+    console.log("data: ", data);
+    switchRoute("/dashboard");
+    return;
+  }
   const accessToken = localStorage.getItem("access_token");
   const userId = localStorage.getItem("user_id");
 
