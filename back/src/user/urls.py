@@ -22,13 +22,6 @@ urlpatterns = [
         path("logout/", views.logout_view, name="logout"),
         path("register/", views.register_user, name="register"),
         path("search/", views.account_search_view, name="search"),
-<<<<<<< HEAD
-        path("token/", jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
-        path("token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
-        path("auth42/", views.auth42, name="auth42"),
-=======
->>>>>>> 3d0214ae8144a7f6d4379231a31b4c7ba2f6a43a
-
 
         path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='password_reset/password_change_done.html'),
             name='password_change_done'),
