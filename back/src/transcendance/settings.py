@@ -48,6 +48,7 @@ LOGOUT_REDIRECT_URL = '/api/accounts/google/logout/?process=logout'
 SITE_ID = 1
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -55,8 +56,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "channels",
     "rooms",
-    "rest_framework_simplejwt.token_blacklist",
     "user",
+    "chat",
     "django.contrib.sites",
     "allauth",
     "allauth.account",
@@ -118,7 +119,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "transcendance.wsgi.application"
-ASGI_APPLICATION = "transcendance.routing.application"
+ASGI_APPLICATION = "transcendance.asgi.application"
 
 
 # Database
@@ -150,18 +151,12 @@ LOGGING = {
             },
 }
 
-REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': [
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
-            ],
-        }
 
-SIMPLE_JWT = {
-        'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
-        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-        'SIGNING_KEY': SECRET_KEY,
-        'AUTH_HEADER_TYPES': ('Bearer',),
-        }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
