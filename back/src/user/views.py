@@ -705,9 +705,9 @@ def auth42(request, *args, **kwargs):
             else:
                 logging.debug("user does not exist")
                 register_42_user(request, user_info)
-            tokens = create_jwt_pair_for_user(user)
+            # tokens = create_jwt_pair_for_user(user)
             response_data = generate_response(
-                    "200", user=user, tokens=tokens)
+                    "200", user=user)
         else:
             response_data['error'] = "Could not get user info."
         logging.debug("response_data on 42auth is %s", response_data)
